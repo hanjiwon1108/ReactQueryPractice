@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { fetchTodos } from "./api/todoApi";
 
 type Todo = {
@@ -9,18 +9,21 @@ type Todo = {
 };
 
 const TodoListWithOptions: React.FC = () => {
-  const { data, error, isLoading } = useQuery<Todo[], Error>({
+  const queryOptions: UseQueryOptions<Todo[], Error> = {
     queryKey: ["todos"],
     queryFn: fetchTodos,
     staleTime: 1000 * 60,
     refetchOnWindowFocus: true,
-  });
+    gcTime: 1000 * 60 * 5,
+  };
+
+  const { data, error, isLoading } = useQuery(queryOptions);
 
   const [todosState, setTodosState] = useState<Todo[]>([]);
 
   React.useEffect(() => {
     if (data) {
-      setTodosState(data.slice(0, 10)); // 처음 10개의 데이터를 상태로 설정
+      setTodosState(data.slice(0, 10));
     }
   }, [data]);
 
