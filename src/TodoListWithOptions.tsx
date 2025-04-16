@@ -1,5 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import { fetchTodos } from "./api/todoApi";
 
 type Todo = {
   id: number;
@@ -7,26 +8,18 @@ type Todo = {
   completed: boolean;
 };
 
-async function fetchTodos(): Promise<Todo[]> {
-  const res = await fetch("https://jsonplaceholder.typicode.com/todos");
-  if (!res.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return res.json();
-}
-
 const TodoListWithOptions: React.FC = () => {
   const { data, error, isLoading } = useQuery<Todo[], Error>({
     queryKey: ["todos"],
     queryFn: fetchTodos,
-    staleTime: 1000 * 60, // 1 minute
-    refetchOnWindowFocus: true, // Refetch on window focus
+    staleTime: 1000 * 60,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error occurred: {error.message}</div>;
 
-  const todos = data ?? []; // Ensure `data` is an array
+  const todos = data ?? [];
 
   return (
     <ul>
