@@ -31,13 +31,16 @@ const TodoList: React.FC = React.memo(() => {
   }
 
   return (
-    <select>
+    <div>
       {todos.slice(0, 10).map((todo) => (
-        <option key={todo.id} value={todo.id} selected={todo.completed}>
-          {todo.title}
-        </option>
+        <div key={todo.id}>
+          <label>
+            <input type="checkbox" checked={todo.completed} readOnly />
+            {todo.title}
+          </label>
+        </div>
       ))}
-    </select>
+    </div>
   );
 });
 
