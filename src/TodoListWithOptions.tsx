@@ -15,6 +15,8 @@ const TodoListWithOptions: React.FC = () => {
     staleTime: 1000 * 60,
     refetchOnWindowFocus: true,
     gcTime: 1000 * 60 * 5,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   };
 
   const { data, error, isLoading } = useQuery(queryOptions);
